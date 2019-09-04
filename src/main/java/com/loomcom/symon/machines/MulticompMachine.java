@@ -27,7 +27,7 @@ package com.loomcom.symon.machines;
 import com.loomcom.symon.Bus;
 import com.loomcom.symon.Cpu;
 import com.loomcom.symon.devices.Acia;
-import com.loomcom.symon.devices.Acia6850;
+import com.loomcom.symon.devices.Acia6551;
 import com.loomcom.symon.devices.Crtc;
 import com.loomcom.symon.devices.Memory;
 import com.loomcom.symon.devices.Pia;
@@ -47,17 +47,17 @@ public class MulticompMachine implements Machine {
 
     // 56K of RAM from $0000 - $DFFF
     private static final int MEMORY_BASE = 0x0000;
-    private static final int MEMORY_SIZE = 0xE000;
+    private static final int MEMORY_SIZE = 0xA000;
 
     // ACIA at $FFD0-$FFD1
-    private static final int ACIA_BASE = 0xFFD0;
+    private static final int ACIA_BASE = 0xA000;
 
     // SD controller at $FFD8-$FFDF
     private static final int SD_BASE = 0xFFD8;
 
     // 8KB ROM at $E000-$FFFF
-    private static final int ROM_BASE = 0xE000;
-    private static final int ROM_SIZE = 0x2000;
+    private static final int ROM_BASE = 0xB000;
+    private static final int ROM_SIZE = 0x5000;
 
 
         // The simulated peripherals
@@ -72,13 +72,13 @@ public class MulticompMachine implements Machine {
         this.bus = new Bus(BUS_BOTTOM, BUS_TOP);
         this.cpu = new Cpu();
         this.ram = new Memory(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE - 1, false);
-        this.acia = new Acia6850(ACIA_BASE);
+        this.acia = new Acia6551(ACIA_BASE);
         this.acia.setBaudRate(0);
 
         bus.addCpu(cpu);
         bus.addDevice(ram);
         bus.addDevice(acia, 1);
-        bus.addDevice(new SdController(SD_BASE), 1);
+        //bus.addDevice(new SdController(SD_BASE), 1);
         
         // TODO: Make this configurable, of course.
         File romImage = new File("rom.bin");
